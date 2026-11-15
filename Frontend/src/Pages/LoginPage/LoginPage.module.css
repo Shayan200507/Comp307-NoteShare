@@ -1,0 +1,197 @@
+:global(body) {
+    margin: 0;
+}
+
+.page {
+    min-height: 100vh;
+    min-height: 100svh;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 36px 20px;
+    background: linear-gradient(145deg, #bdbdbd, #e6e6e6 55%, #333 90%);
+    color: #151515;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page::before {
+    content: '';
+    position: absolute;
+    width: 145%;
+    height: 140%;
+    border-radius: 50%;
+    background: #f7f7f7;
+    border: 32px solid #e8e8e8;
+    transform: rotate(-20deg);
+}
+
+.page::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 153%;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    transform: rotate(-20deg);
+    pointer-events: none;
+}
+
+.card {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    width: 380px;
+    max-width: 100%;
+    padding: 18px 42px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 19px;
+    box-shadow: 0 5px 18px #0000001a;
+}
+
+.brand, .heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    width: 46px;
+    height: 34px;
+    margin-bottom: 3px;
+}
+
+.brand h1 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.brand p, .heading p, .footer {
+    margin: 3px 0 0;
+    color: #4a4a4a;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.heading {
+    margin: 12px 0;
+}
+
+.heading h2 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 11px;
+    border: 1px solid #d9d9d9;
+    border-radius: 7px;
+}
+
+.field img {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.field input {
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    font-size: 11px;
+    color: #151515;
+}
+
+.field input::placeholder {
+    color: #4a4a4a;
+}
+
+.field:focus-within {
+    outline: 2px solid #777;
+    outline-offset: 2px;
+}
+
+.loginButton {
+    margin-top: 9px;
+    padding: 8px;
+    border: 0;
+    border-radius: 7px;
+    background: #151515;
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.footer {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.error, .success {
+    margin: 4px 0 0;
+    font-size: 12px;
+    text-align: center;
+}
+
+.error {
+    color: #b42318;
+}
+
+.success {
+    color: #237a38;
+}
+
+.loginButton:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.signupLink {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #151515;
+    font: inherit;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+    .card {
+        padding: 24px;
+    }
+}
+
+
