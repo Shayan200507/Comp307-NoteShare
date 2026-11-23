@@ -5,7 +5,6 @@ import Header from '../../Components/Header/Header';
 function RequestPage() {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [error, setError] = useState('');
 
     useEffect(() => {
         async function checkSession() {
@@ -25,7 +24,7 @@ function RequestPage() {
 
                 setIsLoggedIn(true);
             } catch {
-                setError('Unable to check your session. Please refresh to try again.');
+                navigate('/', { replace: true });
             }
         }
 
@@ -37,7 +36,7 @@ function RequestPage() {
             <Header pageName="Request" />
             <main>
                 <h1>Request</h1>
-                {error ? <p>{error}</p> : !isLoggedIn && <p>Checking your session...</p>}
+                {!isLoggedIn && <p>Checking your session...</p>}
             </main>
         </>
     );

@@ -31,6 +31,7 @@ export async function me(req,res) {
         const email = result[0].email;
 
         res.status(200).json({
+            id: id,
             email: email
         })
 

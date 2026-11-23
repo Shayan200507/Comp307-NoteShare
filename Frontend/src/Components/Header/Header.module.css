@@ -59,6 +59,81 @@
     outline-offset: 4px;
 }
 
+.logout {
+    margin: 8px 0;
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #fff;
+    color: #000;
+    font: inherit;
+    font-size: 14px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.menu {
+    position: relative;
+}
+
+.menuToggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    border-radius: 6px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.menuToggle span {
+    width: 22px;
+    height: 2px;
+    background: #fff;
+}
+
+.menuToggle:hover {
+    background: #333;
+}
+
+.dropdown {
+    position: fixed;
+    top: 46px;
+    right: 0;
+    width: 170px;
+    height: calc(100dvh - 46px);
+    padding: 6px;
+    box-sizing: border-box;
+    background: black;
+    color: white;
+    z-index: 10;
+}
+
+.dropdown button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: 0;
+    background: none;
+    color: white;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+}
+
+.dropdown button:not(:disabled) {
+    color: #fff;
+    cursor: pointer;
+}
+
+.dropdown button:not(:disabled):hover {
+    background: #333;
+}
+
 @media (max-width: 600px) {
     .header {
         flex-direction: column;
@@ -69,4 +144,5 @@
     .navigation {
         gap: 24px;
     }
+
 }
