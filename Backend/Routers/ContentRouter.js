@@ -6,6 +6,9 @@ import { getAllCourses } from "../Controllers/getAllCourses.js"
 import { unregisterCourse } from "../Controllers/RemoveCourse.js"
 import { uploadNote } from "../Controllers/UploadNotes.js"
 import upload from "../Middleware/UploadMiddleware.js"
+import { getAllNotes } from "../Controllers/getAllNotes.js"
+import { RetrieveFile } from "../Controllers/RetreiveFile.js"
+import { getUserNotifications } from "../Controllers/getUserNotifications.js"
 
 
 
@@ -18,5 +21,8 @@ ContentHandler.post("/getUserCourse", LoginCheck, getUserCourse)
 ContentHandler.get("/getAllCourses", LoginCheck, getAllCourses)
 ContentHandler.delete("/removeCourses", LoginCheck, unregisterCourse)
 ContentHandler.post("/uploadNotes", LoginCheck, upload.single("file"), uploadNote)
+ContentHandler.get("/getAllNotes", LoginCheck, getAllNotes)
+ContentHandler.get("/retrieveFile/:noteId", LoginCheck, RetrieveFile)
+ContentHandler.post("/getUserNotifications", LoginCheck, getUserNotifications)
 
 

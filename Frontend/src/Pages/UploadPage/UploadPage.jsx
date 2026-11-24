@@ -42,28 +42,31 @@ function UploadPage() {
     }
 
     useEffect(() => {
+        const controller = new AbortController();
+
         async function checkSession() {
             try {
                 const response = await fetch('http://localhost:8000/api/auth/me', {
                     credentials: 'include',
+                    signal: controller.signal,
                 });
 
-                if (response.status === 401 || response.status === 404) {
+                if (!response.ok) {
                     navigate('/', { replace: true });
                     return;
                 }
 
-                if (!response.ok) {
-                    throw new Error('Unable to check your session');
-                }
 
                 setIsLoggedIn(true);
-            } catch {
-                navigate('/', { replace: true });
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    navigate('/', { replace: true });
+                }
             }
         }
 
         checkSession();
+        return () => controller.abort();
     }, [navigate]);
 
     useEffect(() => {
@@ -71,6 +74,8 @@ function UploadPage() {
         const controller = new AbortController();
 
         async function loadCourses() {
+            setCoursesLoading(true);
+            setCoursesError('');
             try {
                 const response = await fetch('http://localhost:8000/api/Content/getUserCourse', {
                     credentials: 'include',

@@ -105,4 +105,36 @@ async function createUploadsTable() {
 }
 
 
-await createUploadsTable()
+
+async function createNotificationTable() {
+    let db;
+
+    try {
+        db = await OpenDatabase();
+
+        await db.exec(`
+            PRAGMA foreign_keys = ON;
+
+            CREATE TABLE IF NOT EXISTS Notification (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                note_id INTEGER NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id) REFERENCES User(id),
+                FOREIGN KEY (note_id) REFERENCES Note(id)
+            );
+        `);
+
+        console.log("Notification table created successfully");
+
+    } catch (error) {
+        console.error(error);
+    } finally {
+        if (db) {
+            await db.close();
+        }
+    }
+}
+
+await createNotificationTable()

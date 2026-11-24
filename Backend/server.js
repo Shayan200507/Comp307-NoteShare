@@ -3,19 +3,24 @@ import session  from "express-session"
 import cors from "cors";
 import {AuthHandler} from "./Routers/AuthRouter.js"
 import {ContentHandler} from "./Routers/ContentRouter.js"
+import path from "path"
 
 
 
 const server = express()
 const PORT = 8000
 
-
+process.loadEnvFile();
 server.use(cors({
   origin: "http://localhost:5173",
   credentials: true,
 }));
 
 server.use(express.json())
+
+server.use("/Uploads", express.static(
+    path.join(import.meta.dirname, "Uploads")
+));
 
 
 server.use(session({

@@ -84,11 +84,10 @@ export default function MyCoursesPage() {
                     signal: controller.signal,
                 });
 
-                if (session.status === 401 || session.status === 404) {
+                if (!session.ok) {
                     navigate('/', { replace: true });
                     return;
                 }
-                if (!session.ok) throw new Error('Unable to check your session.');
 
                 const user = await session.json();
                 setUserId(user.id);
@@ -129,7 +128,7 @@ export default function MyCoursesPage() {
                 setCourses(await response.json());
             } catch (error) {
                 if (error.name !== 'AbortError') {
-                    setError(`${error.message} Please refresh to try again.`);
+                    setError('Unable to load your courses. Please refresh to try again.');
                 }
             } finally {
                 if (!controller.signal.aborted) setLoading(false);
@@ -161,7 +160,7 @@ export default function MyCoursesPage() {
                 setAllCourses(await response.json());
             } catch (error) {
                 if (error.name !== 'AbortError') {
-                    setAllCoursesError(`${error.message} Please refresh to try again.`);
+                    setAllCoursesError('Unable to load available courses. Please refresh to try again.');
                 }
             } finally {
                 if (!controller.signal.aborted) setAllCoursesLoading(false);

@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 const uploadPath = path.join(import.meta.dirname, "../Uploads");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/");
+        cb(null, "Uploads/");
     },
     filename: (req, file, cb) => {
         cb(null, `${randomUUID()}.pdf`);

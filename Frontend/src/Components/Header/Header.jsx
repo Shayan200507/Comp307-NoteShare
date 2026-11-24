@@ -72,6 +72,10 @@ function Header({ pageName = 'Home' }) {
                     }}>My Courses</button>
                     <button type="button" disabled title="My Uploads is not available yet">My Uploads</button>
                     <button type="button" disabled title="Saved Notes is not available yet">Saved Notes</button>
+                    <button type="button" onClick={() => {
+                        setMenuOpen(false);
+                        navigate('/notifications');
+                    }}>Notifications</button>
                 </div>}
             </div>
             {error && <p role="alert">{error}</p>}
