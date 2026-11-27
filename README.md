@@ -1,3 +1,4 @@
+<!-- Shayan Sheikh -->
 # NoteShare
 
 NoteShare is a student platform for sharing PDF course notes. Users can register for courses, upload notes, browse and download PDFs, and receive notifications about new notes in their courses.

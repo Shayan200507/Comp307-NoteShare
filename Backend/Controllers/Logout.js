@@ -1,3 +1,4 @@
+// Shayan Sheikh
 export function Logout(req, res) {
     req.session.destroy((error) => {
         if (error) {

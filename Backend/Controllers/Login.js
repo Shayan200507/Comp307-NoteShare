@@ -1,3 +1,4 @@
+// Shayan Sheikh
 import bcrypt from "bcrypt";
 import { OpenDatabase } from "../Database/OpenDatabase.js";
 

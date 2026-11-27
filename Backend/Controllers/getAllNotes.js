@@ -1,3 +1,4 @@
+// Shayan Sheikh
 import { OpenDatabase } from "../Database/OpenDatabase.js";
 
 export async function getAllNotes(req, res) {

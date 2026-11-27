@@ -1,3 +1,4 @@
+// Shayan Sheikh
 import styles from './NoteCard.module.css';
 import { useNavigate } from 'react-router';
 
