@@ -1,4 +1,4 @@
-// Shayan Sheikh
+import { getCurrentUser } from '../../api/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Header from '../../Components/Header/Header';
@@ -47,17 +47,7 @@ function UploadPage() {
 
         async function checkSession() {
             try {
-                const response = await fetch('http://localhost:8000/api/auth/me', {
-                    credentials: 'include',
-                    signal: controller.signal,
-                });
-
-                if (!response.ok) {
-                    navigate('/', { replace: true });
-                    return;
-                }
-
-
+                await getCurrentUser({ signal: controller.signal });
                 setIsLoggedIn(true);
             } catch (error) {
                 if (error.name !== 'AbortError') {
@@ -107,7 +97,7 @@ function UploadPage() {
         <>
             <Header pageName="Upload" />
             <main className={styles.page}>
-                {!isLoggedIn ? <p role="status">Checking your session...</p> : (
+                {!isLoggedIn ? <p>Checking your session...</p> : (
                     <section className={styles.card}>
                         <div className={styles.intro}>
                             <img src={pdfIcon} alt="" />
@@ -124,7 +114,7 @@ function UploadPage() {
                                         <option key={course.id} value={course.id}>{course.course_code}</option>
                                     ))}
                                 </select>
-                                {coursesError && <p role="alert">{coursesError}</p>}
+                                {coursesError && <p>{coursesError}</p>}
                                 {!coursesLoading && !coursesError && courses.length === 0 && (
                                     <p>Register for a course in My Courses before uploading a note.</p>
                                 )}
@@ -141,8 +131,8 @@ function UploadPage() {
                                 <label htmlFor="file">File (PDF) <span>*</span></label>
                                 <input className={styles.file} id="file" name="file" type="file" accept=".pdf,application/pdf" required />
                             </div>
-                            {uploadError && <p role="alert">{uploadError}</p>}
-                            {uploadSuccess && <p role="status">{uploadSuccess}</p>}
+                            {uploadError && <p>{uploadError}</p>}
+                            {uploadSuccess && <p>{uploadSuccess}</p>}
                             <button className={styles.uploadButton} type="submit" disabled={uploading || coursesLoading || !!coursesError || courses.length === 0}>
                                 <img src={uploadIcon} alt="" />
                                 {uploading ? 'Uploading...' : 'Upload Note'}

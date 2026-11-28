@@ -1,4 +1,3 @@
-// Shayan Sheikh
 
 
 import { BrowserRouter, Routes, Route } from "react-router";
@@ -8,7 +7,9 @@ import LoginPage from './Pages/LoginPage/LoginPage';
 import { HomePage } from './Pages/HomePage/HomePage';
 import BrowsePage from './Pages/BrowsePage/BrowsePage';
 import UploadPage from './Pages/UploadPage/UploadPage';
-import RequestPage from './Pages/RequestPage/RequestPage';
+import DiscussionsPage from './Pages/DiscussionsPage/DiscussionsPage';
+import CreatePostPage from './Pages/CreatePostPage/CreatePostPage';
+import QuestionDetailsPage from './Pages/QuestionDetailsPage/QuestionDetailsPage';
 import MyCoursesPage from './Pages/MyCoursesPage/MyCoursesPage';
 import ReadNotePage from './Pages/ReadNotePage/ReadNotePage';
 import NotificationsPage from './Pages/NotificationsPage/NotificationsPage';
@@ -26,7 +27,9 @@ function App() {
       <Route path="/home" element={<HomePage />} />
       <Route path="/browse" element={<BrowsePage />} />
       <Route path="/upload" element={<UploadPage />} />
-      <Route path="/request" element={<RequestPage />} />
+      <Route path="/discussions" element={<DiscussionsPage />} />
+      <Route path="/create-post/:courseCode" element={<CreatePostPage />} />
+      <Route path="/question/:questionId" element={<QuestionDetailsPage />} />
       <Route path="/my-courses" element={<MyCoursesPage />} />
       <Route path="/readNote/:noteId" element={<ReadNotePage />} />
       <Route path="/notifications" element={<NotificationsPage />} />

@@ -17,6 +17,7 @@ import { CreateResponse } from "../Controllers/CreateResponse.js"
 import { getCourseQuestions } from "../Controllers/getCourseQuestions.js"
 import { getQuestionResponses } from "../Controllers/getQuestionResponses.js"
 import { getQuestionDetails } from "../Controllers/getQuestiondetails.js"
+import { checkDictionary } from "../Controllers/checkDictionary.js"
 
 
 
@@ -38,5 +39,6 @@ ContentHandler.post("/createResponse", LoginCheck, CreateResponse)
 ContentHandler.get("/getCourseQuestions/:courseID", LoginCheck, getCourseQuestions)
 ContentHandler.get("/getQuestionResponses/:QuestionID", LoginCheck, getQuestionResponses)
 ContentHandler.get("/getQuestionDetails/:QuestionID", LoginCheck, getQuestionDetails)
+ContentHandler.get("/checkDictionary/:word", LoginCheck, checkDictionary)
 
 

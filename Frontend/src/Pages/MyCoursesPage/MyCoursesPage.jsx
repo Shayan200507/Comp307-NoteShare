@@ -1,4 +1,4 @@
-// Shayan Sheikh
+import { getCurrentUser } from '../../api/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Header from '../../Components/Header/Header';
@@ -6,7 +6,7 @@ import styles from './MyCoursesPage.module.css';
 
 export default function MyCoursesPage() {
     const navigate = useNavigate();
-    const [userId, setUserId] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [courses, setCourses] = useState([]);
     const [allCourses, setAllCourses] = useState([]);
     const [allCoursesLoading, setAllCoursesLoading] = useState(true);
@@ -80,18 +80,8 @@ export default function MyCoursesPage() {
 
         async function checkSession() {
             try {
-                const session = await fetch('http://localhost:8000/api/auth/me', {
-                    credentials: 'include',
-                    signal: controller.signal,
-                });
-
-                if (!session.ok) {
-                    navigate('/', { replace: true });
-                    return;
-                }
-
-                const user = await session.json();
-                setUserId(user.id);
+                await getCurrentUser({ signal: controller.signal });
+                setIsLoggedIn(true);
             } catch (error) {
                 if (error.name !== 'AbortError') {
                     navigate('/', { replace: true });
@@ -104,7 +94,7 @@ export default function MyCoursesPage() {
     }, [navigate]);
 
     useEffect(() => {
-        if (userId === null) return;
+        if (!isLoggedIn) return;
 
         const controller = new AbortController();
 
@@ -113,10 +103,8 @@ export default function MyCoursesPage() {
             setError('');
             try {
                 const response = await fetch('http://localhost:8000/api/Content/getUserCourse', {
-                    method: 'POST',
+                    method: 'GET',
                     credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId }),
                     signal: controller.signal,
                 });
 
@@ -138,7 +126,7 @@ export default function MyCoursesPage() {
 
         loadCourses();
         return () => controller.abort();
-    }, [navigate, userId, refresh]);
+    }, [navigate, isLoggedIn, refresh]);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -180,9 +168,9 @@ export default function MyCoursesPage() {
                     Back to Home
                 </button>
                 <h1>My Courses</h1>
-                {removeError && <p role="alert">{removeError}</p>}
-                {loading ? <p role="status">Loading your courses...</p> :
-                    error ? <p role="alert">{error}</p> :
+                {removeError && <p>{removeError}</p>}
+                {loading ? <p>Loading your courses...</p> :
+                    error ? <p>{error}</p> :
                     courses.length === 0 ? <p>You haven't registered for any courses yet.</p> : (
                         <ul className={styles.courses}>
                             {courses.map((course) => (
@@ -204,9 +192,9 @@ export default function MyCoursesPage() {
                 {!loading && !error && (
                     <section>
                         <h2>Available Courses</h2>
-                        {addError && <p role="alert">{addError}</p>}
-                        {allCoursesLoading ? <p role="status">Loading available courses...</p> :
-                            allCoursesError ? <p role="alert">{allCoursesError}</p> :
+                        {addError && <p>{addError}</p>}
+                        {allCoursesLoading ? <p>Loading available courses...</p> :
+                            allCoursesError ? <p>{allCoursesError}</p> :
                             availableCourses.length === 0 ? <p>No more courses available to register for.</p> : (
                             <ul className={styles.courses}>
                                 {availableCourses.map(course => (

@@ -1,4 +1,3 @@
-// Shayan Sheikh
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import bookIcon from '../SignupPage/icons/book.svg';
@@ -37,11 +36,11 @@ function LoginPage() {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(data.error || data.message || 'Unable to log in');
+                setError(data.error);
                 return;
             }
 
-            setSuccess(data.message || 'Login successful');
+            setSuccess(data.message);
             navigate('/home');
         } catch {
             setError('Unable to connect to the server');

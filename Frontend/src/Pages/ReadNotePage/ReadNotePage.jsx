@@ -1,4 +1,4 @@
-// Shayan Sheikh
+import { getCurrentUser } from '../../api/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import Header from '../../Components/Header/Header';
@@ -13,6 +13,39 @@ export default function ReadNotePage() {
     const [error, setError] = useState('');
     const [downloading, setDownloading] = useState(false);
     const [downloadError, setDownloadError] = useState('');
+    const [word, setWord] = useState('');
+    const [definition, setDefinition] = useState(null);
+    const [dictionaryLoading, setDictionaryLoading] = useState(false);
+    const [dictionaryError, setDictionaryError] = useState('');
+
+    async function lookupWord(formData) {
+        if (dictionaryLoading) return;
+        const searchWord = formData.get('word').trim();
+        setDictionaryError('');
+        setDefinition(null);
+        if (!searchWord) {
+            setDictionaryError('Please enter a word');
+            return;
+        }
+
+        setDictionaryLoading(true);
+        try {
+            const response = await fetch(`http://localhost:8000/api/Content/checkDictionary/${encodeURIComponent(searchWord)}`, {
+                credentials: 'include',
+            });
+            if (response.status === 401) {
+                navigate('/', { replace: true });
+                return;
+            }
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error);
+            setDefinition(data);
+        } catch (error) {
+            setDictionaryError(error.message);
+        } finally {
+            setDictionaryLoading(false);
+        }
+    }
 
     async function downloadNote() {
         setDownloading(true);
@@ -44,17 +77,12 @@ export default function ReadNotePage() {
 
         async function checkSession() {
             try {
-                const response = await fetch('http://localhost:8000/api/auth/me', {
-                    credentials: 'include',
-                    signal: controller.signal,
-                });
-                if (!response.ok) {
-                    navigate('/', { replace: true });
-                    return;
-                }
+                await getCurrentUser({ signal: controller.signal });
                 setIsLoggedIn(true);
             } catch (error) {
-                if (error.name !== 'AbortError') navigate('/', { replace: true });
+                if (error.name !== 'AbortError') {
+                    navigate('/', { replace: true });
+                }
             }
         }
 
@@ -102,10 +130,11 @@ export default function ReadNotePage() {
         <>
             <Header pageName="Browse" />
             <main className={styles.page}>
-                <button className={styles.backButton} type="button" onClick={() => navigate('/browse')}>Back to Browse</button>
-                {!isLoggedIn ? <p role="status">Checking your session...</p> :
-                    loading ? <p role="status">Loading note...</p> :
-                    error ? <p role="alert">{error}</p> : note && (
+                <button className={styles.backButton} type="button" onClick={() => navigate('/browse')}>Browse More</button>
+                {!isLoggedIn ? <p>Checking your session...</p> :
+                    loading ? <p>Loading note...</p> :
+                    error ? <p>{error}</p> : note && (
+                        <div className={styles.content}>
                         <article className={styles.note}>
                             <div className={styles.noteHeader}>
                                 <h1>{note.title}</h1>
@@ -115,7 +144,7 @@ export default function ReadNotePage() {
                                     </button>
                                 )}
                             </div>
-                            {downloadError && <p role="alert">{downloadError}</p>}
+                            {downloadError && <p>{downloadError}</p>}
                             <p>{note.description}</p>
                             <p>Uploaded: {note.uploaded_at?.slice(0, 10)}</p>
                             {note.pdfUrl && (
@@ -126,6 +155,31 @@ export default function ReadNotePage() {
                                 />
                             )}
                         </article>
+                        <aside className={styles.dictionary}>
+                            <h2>Dictionary</h2>
+                            <form className={styles.dictionaryForm} action={lookupWord}>
+                                <label htmlFor="dictionary-word">Look up a word</label>
+                                <input
+                                    id="dictionary-word"
+                                    name="word"
+                                    value={word}
+                                    onChange={event => setWord(event.target.value)}
+                                    required
+                                    disabled={dictionaryLoading}
+                                />
+                                <button className={styles.backButton} type="submit" disabled={dictionaryLoading}>
+                                    {dictionaryLoading ? 'Searching...' : 'Search'}
+                                </button>
+                            </form>
+                            {dictionaryError && <p>{dictionaryError}</p>}
+                            {definition && (
+                                <>
+                                    <h3>{definition.word}</h3>
+                                    <p>{definition.definition}</p>
+                                </>
+                            )}
+                        </aside>
+                        </div>
                     )}
             </main>
         </>

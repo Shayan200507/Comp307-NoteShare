@@ -1,7 +1,7 @@
-// Shayan Sheikh
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import bookIcon from '../../Pages/SignupPage/icons/book.svg';
+import menuIcon from '../../assets/menu.svg';
 import styles from './Header.module.css';
 
 function Header({ pageName = 'Home' }) {
@@ -9,7 +9,7 @@ function Header({ pageName = 'Home' }) {
     const [loggingOut, setLoggingOut] = useState(false);
     const [error, setError] = useState('');
     const [menuOpen, setMenuOpen] = useState(false);
-    const pages = ['Home', 'Browse', 'Upload', 'Request'];
+    const pages = ['Home', 'Browse', 'Upload', 'Discussions'];
 
     async function logout() {
         setLoggingOut(true);
@@ -62,24 +62,21 @@ function Header({ pageName = 'Home' }) {
                     aria-expanded={menuOpen}
                     onClick={() => setMenuOpen(!menuOpen)}
                 >
-                    <span />
-                    <span />
-                    <span />
+                    <img src={menuIcon} alt="" />
                 </button>
                 {menuOpen && <div className={styles.dropdown}>
                     <button type="button" onClick={() => {
                         setMenuOpen(false);
                         navigate('/my-courses');
-                    }}>My Courses</button>
-                    <button type="button" disabled title="My Uploads is not available yet">My Uploads</button>
-                    <button type="button" disabled title="Saved Notes is not available yet">Saved Notes</button>
+                    }}>My Courses</button>                 
+                    <button type="button" disabled title="Saved Notes is not available yet">bookmarks</button>
                     <button type="button" onClick={() => {
                         setMenuOpen(false);
                         navigate('/notifications');
                     }}>Notifications</button>
                 </div>}
             </div>
-            {error && <p role="alert">{error}</p>}
+            {error && <p>{error}</p>}
         </header>
     );
 }

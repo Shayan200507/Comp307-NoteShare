@@ -1,4 +1,3 @@
-// Shayan Sheikh
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import bookIcon from './icons/book.svg';
@@ -43,7 +42,7 @@ function SignupPage() {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(data.message || 'Unable to create account');
+                setError(data.error);
                 return;
             }
 

@@ -96,13 +96,13 @@ Content endpoints use the `/api/Content` prefix and require login:
 | --- | --- | --- |
 | GET | `/getAllCourses` | List all courses. |
 | GET | `/getUserCourse` | List the session user's registered courses. |
-| POST | `/getUserCourse` | List registered courses using `{ "userId": 1 }`, checked against the session. |
+| POST | `/getUserCourse` | List the session user's registered courses; no request body needed. |
 | POST | `/registerCourses` | Register for one course using `{ "courseId": 3 }`. |
 | DELETE | `/removeCourses` | Remove one subscription using `{ "courseId": 3 }`. |
 | POST | `/uploadNotes` | Multipart form with `courseId`, `title`, `description`, and `file`. |
 | GET | `/getAllNotes` | List note metadata and course codes without PDF URLs. |
 | GET | `/retrieveFile/:noteId` | Get one note's details and PDF URL. |
-| POST | `/getUserNotifications` | Get notifications using `{ "userId": 1 }`, checked against the session. |
+| POST | `/getUserNotifications` | Get the session user's notifications; no request body needed. |
 
 ## Technology and storage
 

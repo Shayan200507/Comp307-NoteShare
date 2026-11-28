@@ -1,4 +1,4 @@
-// Shayan Sheikh
+import { getCurrentUser } from '../../api/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Header from '../../Components/Header/Header';
@@ -11,23 +11,20 @@ function BrowsePage() {
     const [notes, setNotes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [search, setSearch] = useState('');
+
+    const filteredNotes = notes.filter(note =>
+        note.title.toLowerCase().includes(search.toLowerCase()) ||
+        note.course_code?.toLowerCase().includes(search.toLowerCase()) ||
+        note.description.toLowerCase().includes(search.toLowerCase())
+    );
 
     useEffect(() => {
         const controller = new AbortController();
 
         async function checkSession() {
             try {
-                const response = await fetch('http://localhost:8000/api/auth/me', {
-                    credentials: 'include',
-                    signal: controller.signal,
-                });
-
-                if (!response.ok) {
-                    navigate('/', { replace: true });
-                    return;
-                }
-
-
+                await getCurrentUser({ signal: controller.signal });
                 setIsLoggedIn(true);
             } catch (error) {
                 if (error.name !== 'AbortError') {
@@ -77,13 +74,24 @@ function BrowsePage() {
         <>
             <Header pageName="Browse" />
             <main className={styles.page}>
-                <h1>Browse Notes</h1>
-                {!isLoggedIn ? <p role="status">Checking your session...</p> :
-                    loading ? <p role="status">Loading notes...</p> :
-                    error ? <p role="alert">{error}</p> :
-                    notes.length === 0 ? <p>No notes have been uploaded yet.</p> : (
+                <div className={styles.heading}>
+                    <h1>Browse Notes</h1>
+                    <input
+                        className={styles.search}
+                        type="search"
+                        aria-label="Search notes"
+                        placeholder="Search notes..."
+                        value={search}
+                        onChange={event => setSearch(event.target.value)}
+                    />
+                </div>
+                {!isLoggedIn ? <p>Checking your session...</p> :
+                    loading ? <p>Loading notes...</p> :
+                    error ? <p>{error}</p> :
+                    notes.length === 0 ? <p>No notes have been uploaded yet.</p> :
+                    filteredNotes.length === 0 ? <p>No matching notes found.</p> : (
                         <div className={styles.notes}>
-                            {notes.map(note => <NoteCard key={note.id} note={note} />)}
+                            {filteredNotes.map(note => <NoteCard key={note.id} note={note} />)}
                         </div>
                     )}
             </main>
