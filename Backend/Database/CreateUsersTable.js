@@ -138,4 +138,62 @@ async function createNotificationTable() {
     }
 }
 
-await createNotificationTable()
+async function createQuestionsTable() {
+    let db;
+
+    try {
+        db = await OpenDatabase();
+
+        await db.exec(`
+            PRAGMA foreign_keys = ON;
+
+            CREATE TABLE IF NOT EXISTS Questions (
+                id INTEGER PRIMARY KEY,
+                user_id INTEGER,
+                course_id INTEGER,
+                title TEXT NOT NULL,
+                body TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id) REFERENCES User(id),
+                FOREIGN KEY (course_id) REFERENCES Course(id)
+            );
+        `);
+
+        console.log("Questions table created successfully");
+    } catch (error) {
+        console.error(error);
+    } finally {
+        if (db) await db.close();
+    }
+}
+
+async function createAnswersTable() {
+    let db;
+
+    try {
+        db = await OpenDatabase();
+
+        await db.exec(`
+            PRAGMA foreign_keys = ON;
+
+            CREATE TABLE IF NOT EXISTS Responses (
+                id INTEGER PRIMARY KEY,
+                question_id INTEGER,
+                user_id INTEGER,
+                body TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (question_id) REFERENCES Questions(id),
+                FOREIGN KEY (user_id) REFERENCES User(id)
+            );
+        `);
+
+        console.log("Answers table created successfully");
+    } catch (error) {
+        console.error(error);
+    } finally {
+        if (db) await db.close();
+    }
+}
+

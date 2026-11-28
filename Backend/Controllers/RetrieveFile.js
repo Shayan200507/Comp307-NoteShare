@@ -17,7 +17,7 @@ export async function RetrieveFile(req, res) {
         `, [noteId]);
 
         if (!note) {
-            return res.status(404).json({ message: "Note not found" });
+            return res.status(404).json({ error: "Note not found" });
         }
 
         res.status(200).json({
@@ -31,7 +31,7 @@ export async function RetrieveFile(req, res) {
     }
     catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Unable to retrieve file" });
+        return res.status(500).json({ error: "Unable to retrieve file" });
     } finally {
         if (db) {
             await db.close();

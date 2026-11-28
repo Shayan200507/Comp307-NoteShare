@@ -5,9 +5,6 @@ import { OpenDatabase } from "../Database/OpenDatabase.js";
 export async function getUserCourse(req,res){
 
     const id = req.session.userId
-    if (req.method === 'POST' && req.body?.userId !== id) {
-        return res.status(403).json({ error: 'User ID does not match your session' });
-    }
     let db;
 
     try{

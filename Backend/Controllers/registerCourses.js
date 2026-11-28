@@ -3,10 +3,8 @@ import { OpenDatabase } from "../Database/OpenDatabase.js";
 
 export async function registerCourse(req, res) {
     const id = req.session.userId;
-    const { courseId } = req.body ?? {};
-    if (!Number.isSafeInteger(courseId) || courseId <= 0) {
-        return res.status(400).json({ error: "courseId must be a positive integer" });
-    }
+    const { courseId } = req.body;
+    
     let db;
 
     try {

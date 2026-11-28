@@ -6,7 +6,7 @@ export async function Signup(req, res) {
     const { email, password } = req.body ?? {};
 
     if (typeof email !== "string" || !email.trim() || typeof password !== "string" || !password) {
-        return res.status(400).json({ message: "Email and password are required" });
+        return res.status(400).json({ error: "Email and password are required" });
     }
 
     let db;
@@ -20,7 +20,7 @@ export async function Signup(req, res) {
         );
 
         if (existingUser) {
-            return res.status(409).json({ message: "An account with this email already exists" });
+            return res.status(409).json({ error: "An account with this email already exists" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,7 +33,7 @@ export async function Signup(req, res) {
         return res.status(201).json({ message: "Account created successfully" });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Unable to create account" });
+        return res.status(500).json({ error: "Unable to create account" });
     } finally {
         if (db) {
             await db.close();
